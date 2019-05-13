@@ -29,7 +29,13 @@ void SortingStation::parse(std::string str) {
             } else if (checkOperator(str[i]) == MEDIUM && checkOperator(stack.pick().priority) == MEDIUM) {
                 out.push(stack.pop());
                 k.data=str[i];
-               std::cout<<k.data;
+                std::cout<<k.data;
+                k.priority = checkOperator(str[i]);
+                stack.push(k);
+            } else if (checkOperator(str[i] == MEDIUM)) {
+               // out.push(stack.pop());
+                k.data = str[i];
+                
                 k.priority = checkOperator(str[i]);
                 stack.push(k);
             } 
