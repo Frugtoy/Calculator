@@ -2,12 +2,12 @@
 #include<string>
 using std::string;
 enum prio {
-    VERYLOW = 0,
+    VERYLOW,
     LOW,
     MEDIUM,
     HIGH,
-    VERYHIGH
-
+    VERYHIGH,
+    NUMB
 };
 struct Token
 {

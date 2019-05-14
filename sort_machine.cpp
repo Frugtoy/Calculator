@@ -1,73 +1,8 @@
 #include "sort_machine.h"
 #include<iostream>
-void SortingStation::parse(std::string str) {
-    bool flag = false;
-//2+2*2
-    Token k;
-    for(int i = 0; i < str.size(); i++) {
-        if (checkIfOperator(str[i])) {
-            if(checkOperator(str[i]) == VERYLOW) {
-                k.data = str[i];
-                std::cout<<k.data;
-                k.priority=  checkOperator(str[i]);
-                stack.push(k);
-                if(!flag) {
-                    flag = true;
-                } else {
-                    stack.pop();
-                    while(checkOperator(stack.pick().priority) != VERYLOW) {
-                        std::cout<<stack.pick().data;
-                        out.push(stack.pop());
-                    }
-                    flag = false;
-                }
-            } else if (checkOperator(str[i]) == LOW) {
-                k.data=str[i];
-                k.priority = checkOperator(str[i]);
-                stack.push(k);
+using std::cout;
 
-            } else if (checkOperator(str[i]) == MEDIUM && checkOperator(stack.pick().priority) == MEDIUM) {
-                out.push(stack.pop());
-                k.data=str[i];
-                std::cout<<k.data;
-                k.priority = checkOperator(str[i]);
-                stack.push(k);
-            } else if (checkOperator(str[i] == MEDIUM)) {
-               // out.push(stack.pop());
-                k.data = str[i];
-                
-                k.priority = checkOperator(str[i]);
-                stack.push(k);
-            } 
-        }
-        else {
-             k.data=str[i];
-             std::cout<<k.data;
-             k.priority = checkOperator(str[i]);
-             out.push(k);
-        }
-    }
-    while(stack.get_tail()!=nullptr)
-    {
-        std::cout<<stack.pick().data;
-        out.push(stack.pop());
-    }   
-        
-}
-
-bool SortingStation::checkIfOperator(char sym) {
-    if(sym == '+' ||
-        sym == '-' ||
-        sym == '*' ||
-        sym == '/' ||
-        sym == '(' ||
-        sym == ')') {
-            return true;
-        }
-    return false;
-}
-
-prio SortingStation::checkOperator(char oper) {
+prio SortingStation::check_priority(char oper) {
     switch(oper) {
         case '+':
             return LOW;
@@ -81,5 +16,75 @@ prio SortingStation::checkOperator(char oper) {
             return VERYLOW;
         case ')':
             return VERYLOW;
+        default  :
+            return NUMB;
     }
+}
+Stack<Token> SortingStation::parse(std::string str) 
+{//2+2*2 --->  222*+
+    Token k;
+    size_t skobchka = 0;
+    prio t = LOW;
+    prio n = HIGH;
+    //cout<<str.size()<<std::endl;
+    for(int i = 0; i < str.size(); i++) 
+    {
+        if (check_priority(str[i])!=NUMB) 
+        {
+             k.data=str[i];
+             k.priority = check_priority(str[i]);
+            if(this->stack.get_tail()!= nullptr)
+            {
+                if(k.priority > this->stack.pick().priority)
+                {
+                 this->stack.push(k);
+                 
+                }
+                else if(k.priority <= this->stack.pick().priority && k.priority!=VERYLOW)
+                {
+                  this->out.push(this->stack.pop());  
+                  cout<<this->out.pick().data;
+                }
+                else if(str[i]=='(')
+                {
+                   this->stack.push(k);
+                   skobchka++;
+                   
+                }
+                else if(skobchka!=0)
+                {
+                  while(this->stack.pick().data[0]!='(')
+                  {
+                    this->out.push(this->stack.pick());
+                    cout<</*"("<<*/this->out.pick().data;
+                  }
+                  stack.pop();
+                  skobchka--;
+                }
+            }
+            else
+            {
+                this->stack.push(k);
+            }
+        }
+        else if(check_priority (str[i])== NUMB)
+        {
+           k.priority= NUMB;
+         if( (i < str.size()-1&&check_priority(str[i+1])!= NUMB)||(check_priority(str[i-1]!=NUMB)) )
+         {
+           k.data = str[i];
+           this->out.push(k);
+           cout<</*"NUMB"<<i<<*/this->out.pick().data<<std::endl;
+         }
+          else
+           k.data+=str[i];
+
+        }
+    }
+    while(!this->stack.is_empty())
+    {
+       this->out.push(this->stack.pop());
+         cout<<this->out.pick().data<<std::endl;
+    }        
+    return this->out; 
 } 

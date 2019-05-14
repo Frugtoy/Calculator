@@ -18,7 +18,12 @@ void push(M new_val)
   Node<M> * new_node = new Node<M> (new_val , this->_tail);
   this->_tail = new_node;
 }
-
+bool is_empty()
+{
+  if (this->_tail==nullptr)
+    return true;
+  return false;
+}
  
 M pop()
 {

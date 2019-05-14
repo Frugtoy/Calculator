@@ -8,13 +8,13 @@
 
 class SortingStation {
     public:
-        void parse(std::string str);
+        Stack<Token> parse(std::string str);
 
     private:
         bool checkIfOperator(char sym);
-        prio checkOperator(char oper);
-            Stack<Token>stack;
-            Stack<Token>out;
+        prio check_priority(char oper);
+        Stack<Token>stack;
+        Stack<Token>out;
 
 
 };
