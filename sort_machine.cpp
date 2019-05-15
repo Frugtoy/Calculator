@@ -16,75 +16,126 @@ prio SortingStation::check_priority(char oper) {
             return VERYLOW;
         case ')':
             return VERYLOW;
+        case '^':
+            return HIGH;
         default  :
             return NUMB;
     }
 }
+using std::cout;
 Stack<Token> SortingStation::parse(std::string str) 
-{//2+2*2 --->  222*+
+{
     Token k;
-    size_t skobchka = 0;
-    prio t = LOW;
-    prio n = HIGH;
-    //cout<<str.size()<<std::endl;
     for(int i = 0; i < str.size(); i++) 
     {
-        if (check_priority(str[i])!=NUMB) 
+        k.data = str[i];
+        k.priority = check_priority(str[i]);
+        if (check_priority(str[i]) != NUMB)
         {
-             k.data=str[i];
-             k.priority = check_priority(str[i]);
-            if(this->stack.get_tail()!= nullptr)
+            
+          /*  if(k.priority == VERYLOW)
             {
-                if(k.priority > this->stack.pick().priority)
+                if(str[i] == '(')
                 {
-                 this->stack.push(k);
-                 
+                    if(stack.get_tail()!=nullptr)
+                    {
+                        stack.pick().priority = VERYLOW;
+                    }
                 }
-                else if(k.priority <= this->stack.pick().priority && k.priority!=VERYLOW)
+                else
                 {
-                  this->out.push(this->stack.pop());  
-                  cout<<this->out.pick().data;
+                    stack.pick().priority = VERYHIGH;
                 }
-                else if(str[i]=='(')
+                
+            }*/
+          //  else
+            //{
+                if(stack.is_empty() || k.priority > stack.pick().priority)
                 {
-                   this->stack.push(k);
-                   skobchka++;
-                   
+                    stack.push(k);
                 }
-                else if(skobchka!=0)
+                else
                 {
-                  while(this->stack.pick().data[0]!='(')
-                  {
-                    this->out.push(this->stack.pick());
-                    cout<</*"("<<*/this->out.pick().data;
-                  }
-                  stack.pop();
-                  skobchka--;
+                     out.push(stack.pop());
+                     stack.push(k);
+                     cout<<out.pick().data;
                 }
+            //}
+        }
+        else
+        { 
+            if(out.get_tail() == nullptr || check_priority(str[i-1]) != NUMB)
+            {
+                out.push(k);
+                cout<<out.pick().data;
             }
             else
             {
-                this->stack.push(k);
+               out.pick().data += k.data;
             }
-        }
-        else if(check_priority (str[i])== NUMB)
-        {
-           k.priority= NUMB;
-         if( (i < str.size()-1&&check_priority(str[i+1])!= NUMB)||(check_priority(str[i-1]!=NUMB)) )
-         {
-           k.data = str[i];
-           this->out.push(k);
-           cout<</*"NUMB"<<i<<*/this->out.pick().data<<std::endl;
-         }
-          else
-           k.data+=str[i];
-
         }
     }
     while(!this->stack.is_empty())
     {
        this->out.push(this->stack.pop());
-         cout<<this->out.pick().data<<std::endl;
+         cout<<this->out.pick().data;
     }        
     return this->out; 
 } 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

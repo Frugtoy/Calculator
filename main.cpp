@@ -7,6 +7,6 @@ using std::endl;
 int main()
 {
   SortingStation s;
-  s.parse("2+2*2");
+  s.parse("2*2+2^3");
   return 0;
 }
