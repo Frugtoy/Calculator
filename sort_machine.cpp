@@ -25,7 +25,9 @@ prio SortingStation::check_priority(char oper) {
 using std::cout;
 Stack<Token> SortingStation::parse(std::string str) 
 {
+    size_t pushed =0 ;
     Token k;
+    bool flag = false;
     for(int i = 0; i < str.size(); i++) 
     {
         k.data = str[i];
@@ -33,24 +35,27 @@ Stack<Token> SortingStation::parse(std::string str)
         if (check_priority(str[i]) != NUMB)
         {
             
-          /*  if(k.priority == VERYLOW)
+            if(k.priority == VERYLOW)
             {
                 if(str[i] == '(')
                 {
-                    if(stack.get_tail()!=nullptr)
-                    {
-                        stack.pick().priority = VERYLOW;
-                    }
+                    flag = true;
+                    pushed = 0;
                 }
                 else
                 {
-                    stack.pick().priority = VERYHIGH;
+                    flag =false;
                 }
                 
-            }*/
-          //  else
-            //{
-                if(stack.is_empty() || k.priority > stack.pick().priority)
+            }
+            else
+            {
+                if( (flag == true&& pushed == 0) )
+                {
+                    stack.push(k);
+                     pushed++;
+                }
+                else if((stack.is_empty()|| k.priority > stack.pick().priority)&& pushed != 1 )
                 {
                     stack.push(k);
                 }
@@ -59,8 +64,10 @@ Stack<Token> SortingStation::parse(std::string str)
                      out.push(stack.pop());
                      stack.push(k);
                      cout<<out.pick().data;
+                     pushed=0;
+                     flag =false;
                 }
-            //}
+             }
         }
         else
         { 
