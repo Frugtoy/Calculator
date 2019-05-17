@@ -1,16 +1,47 @@
 #pragma once
-#include "node.cpp"
 #include <exception>
-typedef int  T;
+#include<stdexcept>
+#include "node.h"
+template<typename M>
 class Stack
 {
 public:
-  Stack();
-  void push( T new_val );
-  T pop();
-  T pick();
-  Node* get_tail (){return this->_tail;}
-  ~Stack(){};
-private:
-  Node* _tail;
+Stack()
+{
+ this-> _tail =nullptr;
+}
+Node<M>* get_tail (){return this->_tail;}
+
+void push(M new_val)
+{
+  Node<M> * new_node = new Node<M> (new_val , this->_tail);
+  this->_tail = new_node;
+}
+bool is_empty()
+{
+  if (this->_tail==nullptr)
+    return true;
+  return false;
+}
+ 
+M pop()
+{
+
+   if(this->_tail  == nullptr)
+   {
+       throw std::logic_error("stack is empty");
+   }
+     M val = this->_tail->get_value();
+     Node<M> * ptr = this->_tail;
+     this->_tail = this->_tail->get_next();
+     delete ptr;
+ return val;
+}
+  M pick()
+ {
+   return this->_tail->get_value();
+ }
+  private:
+  Node<M>* _tail; 
 };
+

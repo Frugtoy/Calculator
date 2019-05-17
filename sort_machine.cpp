@@ -1,4 +1,4 @@
-#include "sort_machine.h"
+#include"sort_machine.h" 
 #include<iostream>
 using std::cout;
 
@@ -23,7 +23,7 @@ prio SortingStation::check_priority(char oper) {
     }
 }
 using std::cout;
-Stack<Token> SortingStation::parse(std::string str) 
+Queue<Token> SortingStation::parse(std::string str) 
 {
     size_t pushed =0 ;
     Token k;
@@ -32,8 +32,7 @@ Stack<Token> SortingStation::parse(std::string str)
     {
         k.data = str[i];
         k.priority = check_priority(str[i]);
-        if (check_priority(str[i]) != NUMB)
-        {
+        if (check_priority(str[i]) != NUMB) {
             
             if(k.priority == VERYLOW)
             {
@@ -63,7 +62,7 @@ Stack<Token> SortingStation::parse(std::string str)
                 {
                      out.push(stack.pop());
                      stack.push(k);
-                     cout<<out.pick().data;
+                     cout<<out.tail().data;
                      pushed=0;
                      flag =false;
                 }
@@ -71,22 +70,23 @@ Stack<Token> SortingStation::parse(std::string str)
         }
         else
         { 
-            if(out.get_tail() == nullptr || check_priority(str[i-1]) != NUMB)
+            if(out.is_empty() == true || check_priority(str[i-1]) != NUMB)
             {
                 out.push(k);
-                cout<<out.pick().data;
+                cout<<out.tail().data;
             }
             else
             {
-               out.pick().data += k.data;
+               out.tail().data += k.data;
             }
         }
     }
     while(!this->stack.is_empty())
     {
        this->out.push(this->stack.pop());
-         cout<<this->out.pick().data;
-    }        
+         cout<<this->out.tail().data;
+    } 
+    
     return this->out; 
 } 
 

@@ -1,8 +1,7 @@
-//#include "stack.h"
 #pragma once
 #include <exception>
 #include<stdexcept>
-#include "node.cpp"
+#include "node.h"
 template<typename M>
 class Stack
 {

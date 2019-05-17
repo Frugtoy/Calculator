@@ -1,5 +1,6 @@
+#pragma once
 template<typename T>
-class Node// тут к сожалеию ода и линкед лист вместе но и так сойдет
+class Node
 {
 public:
     Node(T value , Node<T>*next)
@@ -12,10 +13,18 @@ public:
     {
      return this-> _value;
     }
+    void set_value(T val)
+    {
+      this->_value = val;
+    }
 
-    Node<T>* getNext()
+    Node<T>* get_next()
     {
      return this->_next;
+    }
+    void set_next(Node<T>* next)
+    {
+      this->_next = next;
     }
 private:
   T _value;
